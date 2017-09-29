@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.ranak.vapcode.Data.*;
 
 /**
  * Created by ranak on 29/9/17.
@@ -16,22 +18,28 @@ import java.util.List;
 
 public class CheckInstallApplication {
 
-    public static List<String> getInstalledApplication(Context appContext){
-        List<String> installedApplication = new ArrayList<>();
+    /**
+     *
+     * @param appContext
+     * @return List(type : com.example.ranak.vapcode.Data.InstalledAppNameIcon) of installed application (names & icons)
+     *
+     */
+    public static List<InstalledAppNameIcon> getInstalledApplication(Context appContext){
 
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<InstalledAppNameIcon> installedApplication = new ArrayList<>();
+        String packageName;
+        Drawable appicon;
+
         List<PackageInfo> packs = appContext.getPackageManager().getInstalledPackages(0);
-        //PackageInfo pac = packs.get(0);
-        //PackageManager pm = appContext.getPackageManager();
 
+        for(int i=0;i<packs.size();i++){
 
-        int i=0;
-        for( PackageInfo pk : packs ){
-            PackageInfo pac = packs.get(i);
-            String x = pac.applicationInfo.loadLabel(appContext.getPackageManager()).toString();
-            Log.d("test",x);
-            i++;
+            PackageInfo packageInfo = packs.get(i);
+            packageName = packageInfo.applicationInfo.loadLabel(appContext.getPackageManager()).toString();
+            appicon = packageInfo.applicationInfo.loadIcon(appContext.getPackageManager());
+            installedApplication.add(new InstalledAppNameIcon(packageName,appicon));
+
         }
 
         return  installedApplication;
