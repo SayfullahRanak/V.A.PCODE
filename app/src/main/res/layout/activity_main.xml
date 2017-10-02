@@ -8,11 +8,11 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <fragment
-        android:name="com.example.ranak.vapcode.Ui.Fragment_ListOfAppToLock"
+    <include
+        layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/content_main" />
+        android:layout_height="match_parent" />
+
 
 
     <android.support.design.widget.NavigationView

@@ -8,19 +8,21 @@ import android.graphics.drawable.Drawable;
  */
 
 public class InstalledAppNameIcon {
-    private static String appName;
-    private static Drawable appIcone;
+    private String appName;
+    private Drawable appIcone;
+    /*public  String appName;
+    public  Drawable appIcone;*/
 
     public InstalledAppNameIcon(String name,Drawable icone){
         this.appIcone=icone;
         this.appName =name;
     }
 
-    protected static String getAppName(){
+    public  String getAppName(){
         return appName;
     }
 
-    protected static Drawable getIcon(){
+    public  Drawable getIcon(){
         return appIcone;
     }
 }

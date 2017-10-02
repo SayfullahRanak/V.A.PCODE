@@ -4,5 +4,26 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="navigation_drawer_setting">Settings</string>
+    <string name="navigation_drawer_lock_app">Lock App</string>
+    <string name="navigation_drawer_privacy_policy">Privacy Policy</string>
+    <string name="navigation_drawer_help">Lock App</string>
+    <string name="navigation_Rate_Us">Rate Us</string>
+    <string name="navigation_Share">Share</string>
+    <string name="navigation_about">About Us</string>
+
+    <string name="listofapplock_Locked_App">Locked App</string>
+    <string name="listofapplock_All_App">All App</string>
+    <string name="listofapplock_Set_Password">Set Password</string>
+
     <string name="action_settings">Settings</string>
+    <string name="title_activity_test">test</string>
+
+    <string-array name="SettingsContent">
+        <item> Security Level </item>
+        <item> Reset Password </item>
+        <item> Reset Security Question </item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

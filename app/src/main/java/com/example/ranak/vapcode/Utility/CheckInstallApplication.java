@@ -18,6 +18,7 @@ import com.example.ranak.vapcode.Data.*;
 
 public class CheckInstallApplication {
 
+
     /**
      *
      * @param appContext
@@ -32,14 +33,18 @@ public class CheckInstallApplication {
         Drawable appicon;
 
         List<PackageInfo> packs = appContext.getPackageManager().getInstalledPackages(0);
-
+        PackageManager pm = appContext.getPackageManager();
         for(int i=0;i<packs.size();i++){
 
-            PackageInfo packageInfo = packs.get(i);
-            packageName = packageInfo.applicationInfo.loadLabel(appContext.getPackageManager()).toString();
-            appicon = packageInfo.applicationInfo.loadIcon(appContext.getPackageManager());
-            installedApplication.add(new InstalledAppNameIcon(packageName,appicon));
 
+            PackageInfo packageInfo = packs.get(i);
+            if(pm.getLaunchIntentForPackage(packageInfo.packageName)!=null){
+
+                packageName = packageInfo.applicationInfo.loadLabel(appContext.getPackageManager()).toString();
+                appicon = packageInfo.applicationInfo.loadIcon(appContext.getPackageManager());
+                installedApplication.add(new InstalledAppNameIcon(packageName,appicon));
+
+            }
         }
 
         return  installedApplication;
