@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.MainActivity">
+    tools:context=".Activity.MainActivity"
+    android:orientation="vertical">
+
 
     <LinearLayout
         android:id="@+id/listofapp_mainlayout"
@@ -14,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            
             android:orientation="horizontal">
 
             <Button
@@ -34,7 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listofapp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            >
 
         </ListView>
 
@@ -61,12 +65,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:id="@+id/Setting_mainlayout">
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/Setting">
+            android:entries="@array/SettingsContent"
+            android:id="@+id/Settings_z">
 
         </ListView>
 
@@ -75,16 +81,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/Help_mainlayout"
         android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_menu_camera"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:id="@+id/privacy_policy_mainlayout"
         android:orientation="vertical">
 
     </LinearLayout>
+
 
 </FrameLayout>

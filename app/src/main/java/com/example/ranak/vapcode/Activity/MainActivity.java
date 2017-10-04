@@ -1,5 +1,6 @@
 package com.example.ranak.vapcode.Activity;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,11 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.ranak.vapcode.Adapter.AdapterForListOfApplication;
 import com.example.ranak.vapcode.Data.InstalledAppNameIcon;
+import com.example.ranak.vapcode.Ui.Fragment_ListOfAppToLock;
 import com.example.ranak.vapcode.Utility.CheckInstallApplication;
 import com.example.ranak.vapcode.R;
 
@@ -34,11 +38,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
-        List<InstalledAppNameIcon> installedAppList = CheckInstallApplication.getInstalledApplication(this);
-//        Log.d("test",installedAppList.get(4).getAppName());
-        ListAdapter listAdapter = new AdapterForListOfApplication(this,installedAppList);
-        ListView list = (ListView)findViewById(R.id.listofapp);
-        list.setAdapter(listAdapter);
+        /*ListView list = (ListView) findViewById(R.id.Settings_z);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Hello","World");
+            }
+        });*/
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_lockapp);
 
     }
 
@@ -93,9 +101,15 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_settings) {
             // Handle the camera action
+            Fragment_ListOfAppToLock.setLayoutVisibity(R.id.Setting_mainlayout);
+
         } else if (id == R.id.nav_lockapp) {
 
+            Fragment_ListOfAppToLock.setLayoutVisibity(R.id.listofapp_mainlayout);
+
         } else if (id == R.id.nav_privacy) {
+
+            Fragment_ListOfAppToLock.setLayoutVisibity(R.id.Help_mainlayout);
 
         } else if (id == R.id.nav_share) {
 
@@ -110,4 +124,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
