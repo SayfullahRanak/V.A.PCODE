@@ -5,21 +5,12 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
-import com.example.ranak.vapcode.Adapter.AdapterForListOfApplication;
-import com.example.ranak.vapcode.Data.InstalledAppNameIcon;
 import com.example.ranak.vapcode.R;
-import com.example.ranak.vapcode.Utility.CheckInstallApplication;
-
-import java.util.List;
 
 /**
  * Created by ranak on 29/9/17.

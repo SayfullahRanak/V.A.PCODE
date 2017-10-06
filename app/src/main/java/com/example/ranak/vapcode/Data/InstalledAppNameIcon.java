@@ -1,5 +1,7 @@
 package com.example.ranak.vapcode.Data;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -10,10 +12,12 @@ import android.graphics.drawable.Drawable;
 public class InstalledAppNameIcon {
     private String appName;
     private Drawable appIcone;
+
     /*public  String appName;
     public  Drawable appIcone;*/
 
-    public InstalledAppNameIcon(String name,Drawable icone){
+    public InstalledAppNameIcon(String name, Drawable icone){
+
         this.appIcone=icone;
         this.appName =name;
     }
@@ -25,4 +29,6 @@ public class InstalledAppNameIcon {
     public  Drawable getIcon(){
         return appIcone;
     }
+
+
 }
