@@ -26,7 +26,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include layout="@layout/content_app_bar_main" />
+        <include layout="@layout/content_app_bar_activity_main" />
 
 
     </LinearLayout>

@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 public class InstalledAppNameIcon {
     private String appName;
     private Drawable appIcone;
+    private String packageName;
 
     /*public  String appName;
     public  Drawable appIcone;*/
@@ -24,6 +25,10 @@ public class InstalledAppNameIcon {
 
     public  String getAppName(){
         return appName;
+    }
+
+    public  String getPackageName(){
+        return packageName;
     }
 
     public  Drawable getIcon(){

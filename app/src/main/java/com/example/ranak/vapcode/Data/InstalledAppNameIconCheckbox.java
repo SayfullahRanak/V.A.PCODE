@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 public class InstalledAppNameIconCheckbox {
     private String appName;
     private Drawable appIcone;
+    private String packageName;
     private boolean checkBoxStatus;
 
     /*public  String appName;
@@ -26,6 +27,10 @@ public class InstalledAppNameIconCheckbox {
 
     public  String getAppName(){
         return appName;
+    }
+
+    public  String getPackageName(){
+        return packageName;
     }
 
     public  Drawable getIcon(){

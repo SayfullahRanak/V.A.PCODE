@@ -1,5 +1,6 @@
 package com.example.ranak.vapcode.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -7,14 +8,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.example.ranak.vapcode.Activity.LOCK.LockActivity;
 import com.example.ranak.vapcode.Ui.Fragment_ListOfAppToLock;
 import com.example.ranak.vapcode.R;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 public class MainActivity extends AppCompatActivity
@@ -26,13 +31,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
-        /*ListView list = (ListView) findViewById(R.id.Settings_z);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("Hello","World");
-            }
-        });*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,11 +104,23 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_about) {
 
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d("Hello Hello Hello Hello", "yes yes yes yes");
+        if(requestCode==0 && resultCode==RESULT_OK){
+
+        }
+
     }
 
 
