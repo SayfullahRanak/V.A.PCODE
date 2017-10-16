@@ -1,6 +1,9 @@
 package com.example.ranak.vapcode.Activity;
 
-import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,22 +14,23 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 
-import com.example.ranak.vapcode.Activity.LOCK.LockActivity;
-import com.example.ranak.vapcode.Ui.Fragment_ListOfAppToLock;
+import com.example.ranak.vapcode.Data.ConstantVariables;
+import com.example.ranak.vapcode.Ui.listofapplication.Fragment_ListOfAppToLock;
 import com.example.ranak.vapcode.R;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import com.example.ranak.vapcode.Ui.settings.Fragment_Settings;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    String ApplicationMode=null;
+    private boolean doubleBackToExitPressedOnce=false;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
 
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
@@ -41,9 +45,39 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         drawer.setDrawerListener(toggle);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_lockapp);
+
+
+        SharedPreferences AppCurrentMode = getSharedPreferences(ConstantVariables.APPLICATIONMOODSHAREDPREFERENCE,MODE_PRIVATE);
+        SharedPreferences.Editor editor = AppCurrentMode.edit();
+
+        ApplicationMode = AppCurrentMode.getString(ConstantVariables.APPLICATIONMOODKEY,null);
+
+        if(ApplicationMode==null ){  //|| ApplicationMode.matches(ConstantVariables.APPSTATUSFIRSTTIME)
+            this.ApplicationMode=ConstantVariables.APPSTATUSFIRSTTIME;
+            editor.putString(ConstantVariables.APPLICATIONMOODKEY,ConstantVariables.APPSTATUSFIRSTTIME);
+        }else {
+            this.ApplicationMode=ConstantVariables.APPSTATUSCONSECUTIVE;
+            editor.putString(ConstantVariables.APPLICATIONMOODKEY,ConstantVariables.APPSTATUSCONSECUTIVE);
+        }
+        editor.commit();
+
+        Bundle bundle= new Bundle();
+        bundle.putCharSequence(ConstantVariables.BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY,ApplicationMode);
+
+
+        Fragment_ListOfAppToLock fragment = new Fragment_ListOfAppToLock();
+        fragment.setArguments(bundle);
+        FragmentManager fm = getFragmentManager();
+
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        transaction.add(R.id.content_main,fragment,ConstantVariables.LIST_OF_APP_FRAGMENT_TAG);
+
+        transaction.commit();
+
 
     }
 
@@ -53,8 +87,16 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if(ismainfracmentislive()){
+                super.onBackPressed();
+            }else {
+                goToMainFragment();
+            }
+//            super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -84,18 +126,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        String FragmentTag=null;
+        Fragment fragment=null;
 
         if (id == R.id.nav_settings) {
-            // Handle the camera action
-            Fragment_ListOfAppToLock.setLayoutVisibity(R.id.Setting_mainlayout);
+
+            fragment = new Fragment_Settings();
+            FragmentTag=ConstantVariables.SETTINGS_FRAGMENT_TAG;
+
 
         } else if (id == R.id.nav_lockapp) {
 
-            Fragment_ListOfAppToLock.setLayoutVisibity(R.id.listofapp_mainlayout);
+            fragment = new Fragment_ListOfAppToLock();
+            FragmentTag=ConstantVariables.LIST_OF_APP_FRAGMENT_TAG;
+
 
         } else if (id == R.id.nav_privacy) {
 
-            Fragment_ListOfAppToLock.setLayoutVisibity(R.id.Help_mainlayout);
+
 
         } else if (id == R.id.nav_share) {
 
@@ -104,23 +152,48 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_about) {
 
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Log.d("ENtered"," in lockapp");
+        drawer.closeDrawer(GravityCompat.START);
+        if(fragment!=null){
 
+            Bundle bundle= new Bundle();
+            bundle.putCharSequence(ConstantVariables.BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY,ApplicationMode);
+            fragment.setArguments(bundle);
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.content_main,fragment,FragmentTag);
+            transaction.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
+    private boolean ismainfracmentislive(){
+        Fragment fragment = getFragmentManager().findFragmentByTag(ConstantVariables.LIST_OF_APP_FRAGMENT_TAG);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        Log.d("Hello Hello Hello Hello", "yes yes yes yes");
-        if(requestCode==0 && resultCode==RESULT_OK){
+            if(fragment!=null && fragment.isVisible()){
+                return true;
+            }else {
+                return false;
+            }
 
-        }
+    }
 
+    private boolean goToMainFragment(){
+        Fragment fragment = new Fragment_ListOfAppToLock();
+        String FragmentTag = ConstantVariables.LIST_OF_APP_FRAGMENT_TAG;
+        Bundle bundle= new Bundle();
+        bundle.putCharSequence(ConstantVariables.BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY,ApplicationMode);
+        fragment.setArguments(bundle);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.content_main,fragment,FragmentTag);
+        transaction.commit();
+        navigationView.setCheckedItem(R.id.nav_lockapp);
+        return true;
     }
 
 

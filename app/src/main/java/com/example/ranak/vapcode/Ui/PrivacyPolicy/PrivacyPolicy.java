@@ -1,4 +1,4 @@
-package com.example.ranak.vapcode.Ui;
+package com.example.ranak.vapcode.Ui.PrivacyPolicy;
 
 import android.view.View;
 

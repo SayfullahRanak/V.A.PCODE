@@ -1,8 +1,6 @@
 package com.example.ranak.vapcode.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ranak.vapcode.Data.InstalledAppNameIcon;
 import com.example.ranak.vapcode.Data.InstalledAppNameIconCheckbox;
 import com.example.ranak.vapcode.R;
-import com.example.ranak.vapcode.Ui.ListOfApp;
 
 import java.util.List;
 

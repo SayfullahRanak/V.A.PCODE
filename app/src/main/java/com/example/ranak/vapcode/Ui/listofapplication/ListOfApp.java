@@ -1,4 +1,4 @@
-package com.example.ranak.vapcode.Ui;
+package com.example.ranak.vapcode.Ui.listofapplication;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +36,7 @@ public class ListOfApp extends Activity {
 
 
 
-    protected static boolean settingUpForLockApp(final View mview, final Context mContext){
+    protected static boolean settingUpForLockApp(final View mview, final Context mContext, final String ApplicationMode){
 
         ButtonVisibility(mview,R.id.showallapp);
 
@@ -87,6 +86,7 @@ public class ListOfApp extends Activity {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             CheckBox check = (CheckBox)view.findViewById(R.id.customrowCheckbox);
+
                             setCheckBoxActivity(check,position,mContext);
                         }
                     });
@@ -102,18 +102,38 @@ public class ListOfApp extends Activity {
         SetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent passwordIntend = new Intent();
+                Intent passwordIntend = new Intent();
                 passwordIntend.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                passwordIntend.putExtra(ConstantVariables.LISTOFAAPPFRAGMENT_TO_ANY_ACTIVITY_INTENT_VALUE_KEY,ApplicationMode);
                 passwordIntend.setClass(mContext, LockActivity.class);
                 ((Activity)mContext).startActivityForResult(passwordIntend,0);
 
-                Log.d("Hello Hello Hello Hello", "yes yes yes yes");*/
 
             }
         });
 
 
         return true;
+    }
+
+    @Nullable
+    private static ListView setListViewWithAdapter(View view, Context appContext, int pressedViewId){
+
+        List<InstalledAppNameIcon> installedAppList = CheckInstallApplication.getInstalledApplication(appContext);
+        List<InstalledAppNameIconCheckbox> AppnameAppiconCheckboxstatuslist;
+        if(pressedViewId==R.id.showlockedallapp){
+            AppnameAppiconCheckboxstatuslist = getListOfAppnameAppiconCheckboxstatusLockedapp(appContext,installedAppList);
+            if(AppnameAppiconCheckboxstatuslist.isEmpty()){
+                return null;
+            }
+        }
+        else {
+            AppnameAppiconCheckboxstatuslist = getListOfAppnameAppiconCheckboxstatus(appContext,installedAppList);
+        }
+        ListAdapter listAdapter = new AdapterForListOfApplication(appContext,AppnameAppiconCheckboxstatuslist);
+        ListView list = (ListView)view.findViewById(R.id.listofapp);
+        list.setAdapter(listAdapter);
+        return list;
     }
 
     private static List<InstalledAppNameIconCheckbox> getListOfAppnameAppiconCheckboxstatus(Context appContext,List<InstalledAppNameIcon> installedAppList){
@@ -160,10 +180,10 @@ public class ListOfApp extends Activity {
         String appMood;
 
         SharedPreferences SPcheckBoxstatus = appContext.getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,appContext.MODE_PRIVATE);
-        SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
+//        SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
 
         checkboxstatus =SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,false);
-        editor.commit();
+//        editor.commit();
         Log.d("check box","status : "+pos+" : "+checkboxstatus);
 
         return checkboxstatus;
@@ -192,26 +212,6 @@ public class ListOfApp extends Activity {
 
     }
 
-    @Nullable
-    private static ListView setListViewWithAdapter(View view, Context appContext, int pressedViewId){
-
-        List<InstalledAppNameIcon> installedAppList = CheckInstallApplication.getInstalledApplication(appContext);
-        List<InstalledAppNameIconCheckbox> AppnameAppiconCheckboxstatuslist;
-                if(pressedViewId==R.id.showlockedallapp){
-                    AppnameAppiconCheckboxstatuslist = getListOfAppnameAppiconCheckboxstatusLockedapp(appContext,installedAppList);
-                    if(AppnameAppiconCheckboxstatuslist.isEmpty()){
-                        return null;
-                    }
-                }
-                else {
-                    AppnameAppiconCheckboxstatuslist = getListOfAppnameAppiconCheckboxstatus(appContext,installedAppList);
-                }
-                ListAdapter listAdapter = new AdapterForListOfApplication(appContext,AppnameAppiconCheckboxstatuslist);
-                ListView list = (ListView)view.findViewById(R.id.listofapp);
-                list.setAdapter(listAdapter);
-                return list;
-    }
-
     private static void setCheckBoxActivity(CheckBox chkbx,int position,Context appContext){
         if(chkbx.isChecked()){
             SetCheckBoxStatusAccordingToAppMoode(position,appContext,false);
@@ -223,15 +223,4 @@ public class ListOfApp extends Activity {
         }
     }
 
-
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        Log.d("Hello Hello Hello Hello", "yes yes yes yes");
-        if(requestCode==0 && resultCode==RESULT_OK){
-
-        }
-
-    }*/
 }

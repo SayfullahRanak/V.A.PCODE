@@ -4,11 +4,13 @@
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
-    <fragment
-            android:name="com.example.ranak.vapcode.Ui.Fragment_ListOfAppToLock"
+   <!-- <fragment
+            android:name="com.example.ranak.vapcode.Ui.ListOfApplication.Fragment_ListOfAppToLock"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_listofapptolock" />
+            android:id="@+id/mainFragment"
+            tools:layout="@layout/fragment_listofapptolock" />-->
 </LinearLayout>

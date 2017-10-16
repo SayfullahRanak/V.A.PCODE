@@ -18,27 +18,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/patternStatus"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:id="@+id/patternstatus"/>
 
-    <LinearLayout
+    <!--<fragment
+        android:name="com.example.ranak.vapcode.Ui.vap.Fragment_VAPCODE"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|bottom"
-        android:orientation="vertical"
-
-        >
-
-        <com.example.ranak.vapcode.Activity.LOCK.DrawView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity=""
-            android:layout_weight="2"
-            android:id="@+id/passwordarea"
-            />
-        </LinearLayout>
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_vapcode" />-->
 
 </LinearLayout>
