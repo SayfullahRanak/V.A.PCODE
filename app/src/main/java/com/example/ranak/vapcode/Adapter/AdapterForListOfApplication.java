@@ -38,13 +38,22 @@ public class AdapterForListOfApplication extends ArrayAdapter<InstalledAppNameIc
 
         /*LayoutInflater inflator = LayoutInflater.from(appContext);
         convertView = inflator.inflate(R.layout.customrow_listofapp, null);
+
         TextView text = (TextView) convertView.findViewById(R.id.customrowText);
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.customrowCheckbox);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.customrowImage);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int getPosition = (Integer) buttonView.getTag();
+                appList.get(getPosition).setCheckboxStatus(buttonView.isChecked());
+            }
+        });
+
         text.setText(getItem(position).getAppName());
         imageView.setImageDrawable(getItem(position).getIcon());
-        checkBox.setChecked(getItem(position).getCheckboxStatus());*/
-
+        checkBox.setChecked(getItem(position).getCheckboxStatus());
+        checkBox.setTag(position);*/
 
         ViewHolder holder;
         if(convertView==null) {
@@ -56,9 +65,12 @@ public class AdapterForListOfApplication extends ArrayAdapter<InstalledAppNameIc
             holder.checkbox = (CheckBox) convertView.findViewById(R.id.customrowCheckbox);
             holder.imgeIcon = (ImageView) convertView.findViewById(R.id.customrowImage);
             convertView.setTag(holder);
-            convertView.setTag(R.id.customrowText, holder.text);
-            convertView.setTag(R.id.customrowCheckbox, holder.checkbox);
-            convertView.setTag(R.id.customrowImage, holder.imgeIcon);
+//            convertView.setTag(appList.get(position).getPackageName());
+
+
+//            convertView.setTag(R.id.customrowText, holder.text);
+//            convertView.setTag(R.id.customrowCheckbox, holder.checkbox);
+//            convertView.setTag(R.id.customrowImage, holder.imgeIcon);
             holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -71,14 +83,13 @@ public class AdapterForListOfApplication extends ArrayAdapter<InstalledAppNameIc
             holder = (ViewHolder) convertView.getTag();
         }
         holder.checkbox.setTag(position); // This line is important.
+        holder.text.setTag(appList.get(position).getAppName());
 
         holder.text.setText(appList.get(position).getAppName());
         holder.checkbox.setChecked(appList.get(position).getCheckboxStatus());
         holder.imgeIcon.setImageDrawable(appList.get(position).getIcon());
 
-
-
-
+        convertView.setTag(R.id.customrowlistofapp,appList.get(position).getPackageName());
         return convertView;
 
     }

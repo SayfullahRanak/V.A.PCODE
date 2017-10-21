@@ -18,11 +18,12 @@ public class InstalledAppNameIconCheckbox {
     /*public  String appName;
     public  Drawable appIcone;*/
 
-    public InstalledAppNameIconCheckbox(String name, Drawable icone, boolean checkStatus){
+    public InstalledAppNameIconCheckbox(String name, Drawable icone, boolean checkStatus,String PakgNam){
 
         this.appIcone=icone;
         this.appName =name;
         this.checkBoxStatus=checkStatus;
+        this.packageName = PakgNam;
     }
 
     public  String getAppName(){

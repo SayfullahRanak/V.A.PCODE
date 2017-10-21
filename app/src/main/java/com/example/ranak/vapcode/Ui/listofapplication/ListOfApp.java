@@ -46,10 +46,13 @@ public class ListOfApp extends Activity {
         ListView list = setListViewWithAdapter(mview,mContext,0);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String packageNameAsUnId = view.getTag(R.id.customrowlistofapp)+"";
                 CheckBox check = (CheckBox)view.findViewById(R.id.customrowCheckbox);
-                setCheckBoxActivity(check,position,mContext);
+                setCheckBoxActivity(check,packageNameAsUnId,mContext);
             }
         });
 
@@ -66,8 +69,9 @@ public class ListOfApp extends Activity {
                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String packageNameAsUnId = view.getTag(R.id.customrowlistofapp)+"";
                         CheckBox check = (CheckBox)view.findViewById(R.id.customrowCheckbox);
-                        setCheckBoxActivity(check,position,mContext);
+                        setCheckBoxActivity(check,packageNameAsUnId,mContext);
 
                     }
                 });
@@ -89,9 +93,9 @@ public class ListOfApp extends Activity {
                     list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String packageNameAsUnId = view.getTag(R.id.customrowlistofapp)+"";
                             CheckBox check = (CheckBox)view.findViewById(R.id.customrowCheckbox);
-
-                            setCheckBoxActivity(check,position,mContext);
+                            setCheckBoxActivity(check,packageNameAsUnId,mContext);
                         }
                     });
                 }else{
@@ -136,6 +140,7 @@ public class ListOfApp extends Activity {
         else {
             AppnameAppiconCheckboxstatuslist = getListOfAppnameAppiconCheckboxstatus(appContext,installedAppList);
         }
+//        ListOfApp.listOfnameAppiconfortest =AppnameAppiconCheckboxstatuslist;
         ListAdapter listAdapter = new AdapterForListOfApplication(appContext,AppnameAppiconCheckboxstatuslist);
         ListView list = (ListView)view.findViewById(R.id.listofapp);
         list.setAdapter(listAdapter);
@@ -153,8 +158,8 @@ public class ListOfApp extends Activity {
             Drawable appIcon = insapp.getIcon();
             String uniqeId = insapp.getPackageName();
             Log.d("package names : ",uniqeId+"");
-            boolean checkboxstatus = getCheckBoxStatusAccordingToAppMoode(i,appContext);
-            InstalledAppNameIconCheckboxlist.add(new InstalledAppNameIconCheckbox(appname,appIcon,checkboxstatus));
+            boolean checkboxstatus = getCheckBoxStatusAccordingToAppMoode(uniqeId,appContext);
+            InstalledAppNameIconCheckboxlist.add(new InstalledAppNameIconCheckbox(appname,appIcon,checkboxstatus,uniqeId));
         }
 
         return InstalledAppNameIconCheckboxlist;
@@ -170,9 +175,9 @@ public class ListOfApp extends Activity {
             String appname = insapp.getAppName();
             Drawable appIcon = insapp.getIcon();
             String uniqeId = insapp.getPackageName();
-            boolean checkboxstatus = getCheckBoxStatusAccordingToAppMoode(i,appContext);
+            boolean checkboxstatus = getCheckBoxStatusAccordingToAppMoode(uniqeId,appContext);
             if(checkboxstatus) {
-                InstalledAppNameIconCheckboxlist.add(new InstalledAppNameIconCheckbox(appname,appIcon,checkboxstatus));
+                InstalledAppNameIconCheckboxlist.add(new InstalledAppNameIconCheckbox(appname,appIcon,checkboxstatus,uniqeId));
             }
 
         }
@@ -180,7 +185,7 @@ public class ListOfApp extends Activity {
         return InstalledAppNameIconCheckboxlist;
     }
 
-    public static boolean getCheckBoxStatusAccordingToAppMoode(int pos,Context appContext){
+    public static boolean getCheckBoxStatusAccordingToAppMoode(String unID,Context appContext){
 
         boolean checkboxstatus;
         String appMood;
@@ -188,9 +193,9 @@ public class ListOfApp extends Activity {
         SharedPreferences SPcheckBoxstatus = appContext.getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,appContext.MODE_PRIVATE);
 //        SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
 
-        checkboxstatus =SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,false);
+        checkboxstatus =SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+unID,false);
 //        editor.commit();
-        Log.d("check box","status : "+pos+" : "+checkboxstatus);
+        Log.d("check box","status : "+unID+" : "+checkboxstatus);
 
         return checkboxstatus;
     }
@@ -209,25 +214,25 @@ public class ListOfApp extends Activity {
 
     }
 
-    private static void setCheckBoxActivity(CheckBox chkbx,int position,Context appContext){
+    private static void setCheckBoxActivity(CheckBox chkbx,String packageNameAsUniqId,Context appContext){
         if(chkbx.isChecked()){
-            SetCheckBoxStatusAccordingToAppMoode(position,appContext,false);
+            SetCheckBoxStatusAccordingToAppMoode(packageNameAsUniqId,appContext,false);
             chkbx.setChecked(false);
         }
         else{
-            SetCheckBoxStatusAccordingToAppMoode(position,appContext,true);
+            SetCheckBoxStatusAccordingToAppMoode(packageNameAsUniqId,appContext,true);
             chkbx.setChecked(true);
         }
     }
 
-    private static boolean SetCheckBoxStatusAccordingToAppMoode(int pos,Context appContext,boolean status){
+    private static boolean SetCheckBoxStatusAccordingToAppMoode(String unId,Context appContext,boolean status){
 
         SharedPreferences SPcheckBoxstatus = appContext.getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,appContext.MODE_PRIVATE);
         SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
-        editor.putBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,status);
+        editor.putBoolean(ConstantVariables.EACHCHECKBOXSTATUS+unId,status);
         editor.commit();
 
-        Log.d("check box setup","status : "+pos+" : "+SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,false));
+        Log.d("check box setup","status : "+unId+" : "+SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+unId,false));
         return true;
     }
 
