@@ -1,5 +1,6 @@
 package com.example.ranak.vapcode.Activity;
 
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -30,8 +31,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
@@ -50,17 +49,17 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_lockapp);
 
 
-        SharedPreferences AppCurrentMode = getSharedPreferences(ConstantVariables.APPLICATIONMOODSHAREDPREFERENCE,MODE_PRIVATE);
+        SharedPreferences AppCurrentMode = getSharedPreferences(ConstantVariables.APPLICATION_MOOD_SHARED_PREFERENCE,MODE_PRIVATE);
         SharedPreferences.Editor editor = AppCurrentMode.edit();
 
-        ApplicationMode = AppCurrentMode.getString(ConstantVariables.APPLICATIONMOODKEY,null);
+        ApplicationMode = AppCurrentMode.getString(ConstantVariables.APPLICATION_MOOD_KEY_SH,null);
 
         if(ApplicationMode==null ){  //|| ApplicationMode.matches(ConstantVariables.APPSTATUSFIRSTTIME)
             this.ApplicationMode=ConstantVariables.APPSTATUSFIRSTTIME;
-            editor.putString(ConstantVariables.APPLICATIONMOODKEY,ConstantVariables.APPSTATUSFIRSTTIME);
+            editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSFIRSTTIME);
         }else {
             this.ApplicationMode=ConstantVariables.APPSTATUSCONSECUTIVE;
-            editor.putString(ConstantVariables.APPLICATIONMOODKEY,ConstantVariables.APPSTATUSCONSECUTIVE);
+            editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSCONSECUTIVE);
         }
         editor.commit();
 

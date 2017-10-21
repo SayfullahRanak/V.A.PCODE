@@ -17,10 +17,11 @@ public class InstalledAppNameIcon {
     /*public  String appName;
     public  Drawable appIcone;*/
 
-    public InstalledAppNameIcon(String name, Drawable icone){
+    public InstalledAppNameIcon(String name, Drawable icone , String pakgnm){
 
         this.appIcone=icone;
         this.appName =name;
+        this.packageName=pakgnm;
     }
 
     public  String getAppName(){

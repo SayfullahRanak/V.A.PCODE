@@ -28,6 +28,8 @@ public class CheckInstallApplication {
         List<InstalledAppNameIcon> installedApplication = new ArrayList<>();
         String appName;
         Drawable appicon;
+        String packageName;
+
         float Id ;
 
         List<PackageInfo> packs = appContext.getPackageManager().getInstalledPackages(0);
@@ -40,8 +42,8 @@ public class CheckInstallApplication {
 
                 appName = packageInfo.applicationInfo.loadLabel(appContext.getPackageManager()).toString();
                 appicon = packageInfo.applicationInfo.loadIcon(appContext.getPackageManager());
-
-                installedApplication.add(new InstalledAppNameIcon(appName,appicon));
+                packageName=packageInfo.packageName;
+                installedApplication.add(new InstalledAppNameIcon(appName,appicon,packageName));
 
             }
         }

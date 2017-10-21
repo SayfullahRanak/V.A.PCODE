@@ -35,6 +35,9 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class ListOfApp extends Activity {
 
 
+    //// need to remove later////
+    private static List<InstalledAppNameIconCheckbox> listOfnameAppiconfortest;
+    //// need to remove later////
 
     protected static boolean settingUpForLockApp(final View mview, final Context mContext, final String ApplicationMode){
 
@@ -65,6 +68,7 @@ public class ListOfApp extends Activity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         CheckBox check = (CheckBox)view.findViewById(R.id.customrowCheckbox);
                         setCheckBoxActivity(check,position,mContext);
+
                     }
                 });
 
@@ -104,10 +108,10 @@ public class ListOfApp extends Activity {
             public void onClick(View v) {
                 Intent passwordIntend = new Intent();
                 passwordIntend.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                passwordIntend.putExtra(ConstantVariables.LISTOFAAPPFRAGMENT_TO_ANY_ACTIVITY_INTENT_VALUE_KEY,ApplicationMode);
+                passwordIntend.putExtra(ConstantVariables.APPLICATION_MOOD_KEY_INTENT,ApplicationMode);
                 passwordIntend.setClass(mContext, LockActivity.class);
-                ((Activity)mContext).startActivityForResult(passwordIntend,0);
-
+//                ((Activity)mContext).startActivityForResult(passwordIntend,0);
+                mContext.getApplicationContext().startActivity(passwordIntend);
 
             }
         });
@@ -121,8 +125,10 @@ public class ListOfApp extends Activity {
 
         List<InstalledAppNameIcon> installedAppList = CheckInstallApplication.getInstalledApplication(appContext);
         List<InstalledAppNameIconCheckbox> AppnameAppiconCheckboxstatuslist;
+
         if(pressedViewId==R.id.showlockedallapp){
             AppnameAppiconCheckboxstatuslist = getListOfAppnameAppiconCheckboxstatusLockedapp(appContext,installedAppList);
+
             if(AppnameAppiconCheckboxstatuslist.isEmpty()){
                 return null;
             }
@@ -146,13 +152,13 @@ public class ListOfApp extends Activity {
             String appname = insapp.getAppName();
             Drawable appIcon = insapp.getIcon();
             String uniqeId = insapp.getPackageName();
+            Log.d("package names : ",uniqeId+"");
             boolean checkboxstatus = getCheckBoxStatusAccordingToAppMoode(i,appContext);
             InstalledAppNameIconCheckboxlist.add(new InstalledAppNameIconCheckbox(appname,appIcon,checkboxstatus));
         }
 
         return InstalledAppNameIconCheckboxlist;
     }
-
 
     private static List<InstalledAppNameIconCheckbox> getListOfAppnameAppiconCheckboxstatusLockedapp(Context appContext,List<InstalledAppNameIcon> installedAppList){
 
@@ -189,15 +195,6 @@ public class ListOfApp extends Activity {
         return checkboxstatus;
     }
 
-    private static boolean SetCheckBoxStatusAccordingToAppMoode(int pos,Context appContext,boolean status){
-        SharedPreferences SPcheckBoxstatus = appContext.getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,appContext.MODE_PRIVATE);
-        SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
-        editor.putBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,status);
-        editor.commit();
-
-        Log.d("check box setup","status : "+pos+" : "+SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,false));
-        return true;
-    }
 
     private static void ButtonVisibility(View view,int buttontobeinvalidid ){
 
@@ -221,6 +218,17 @@ public class ListOfApp extends Activity {
             SetCheckBoxStatusAccordingToAppMoode(position,appContext,true);
             chkbx.setChecked(true);
         }
+    }
+
+    private static boolean SetCheckBoxStatusAccordingToAppMoode(int pos,Context appContext,boolean status){
+
+        SharedPreferences SPcheckBoxstatus = appContext.getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,appContext.MODE_PRIVATE);
+        SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
+        editor.putBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,status);
+        editor.commit();
+
+        Log.d("check box setup","status : "+pos+" : "+SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+pos,false));
+        return true;
     }
 
 }

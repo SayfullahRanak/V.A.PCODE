@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ranak.vapcode">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <!--<uses-permission android:name="android.permission.GET_TASKS "/>-->
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -22,12 +29,24 @@
         </activity>
         <activity
             android:name=".Activity.LOCK.LockActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:excludeFromRecents="true" />
 
         <service
-            android:name=".CheckInstalledAppAndLaunchPassword"
+            android:name=".Service.CheckInstalledAppAndLaunchPassword"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+
+        </service>
+
+        <receiver android:name=".Receiver.ReceiverToTriggerPassword"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="my.custom.action.tag.vapcode"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
