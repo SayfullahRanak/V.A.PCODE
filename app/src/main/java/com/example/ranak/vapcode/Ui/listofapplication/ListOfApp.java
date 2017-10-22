@@ -36,12 +36,14 @@ public class ListOfApp extends Activity {
 
 
     //// need to remove later////
-    private static List<InstalledAppNameIconCheckbox> listOfnameAppiconfortest;
+//    private static List<InstalledAppNameIconCheckbox> listOfnameAppiconfortest;
+
     //// need to remove later////
 
     protected static boolean settingUpForLockApp(final View mview, final Context mContext, final String ApplicationMode){
 
         ButtonVisibility(mview,R.id.showallapp);
+
 
         ListView list = setListViewWithAdapter(mview,mContext,0);
 
@@ -215,11 +217,19 @@ public class ListOfApp extends Activity {
     }
 
     private static void setCheckBoxActivity(CheckBox chkbx,String packageNameAsUniqId,Context appContext){
+
+        /*ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
+        ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
+        ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
+        ConstantVariables.listOfApp.add(packageNameAsUniqId+"");*/
+
         if(chkbx.isChecked()){
+//            ConstantVariables.listOfApp.remove(packageNameAsUniqId+"");
             SetCheckBoxStatusAccordingToAppMoode(packageNameAsUniqId,appContext,false);
             chkbx.setChecked(false);
         }
         else{
+//            ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
             SetCheckBoxStatusAccordingToAppMoode(packageNameAsUniqId,appContext,true);
             chkbx.setChecked(true);
         }

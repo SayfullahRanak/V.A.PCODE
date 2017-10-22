@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.example.ranak.vapcode.Data.ConstantVariables;
 import com.example.ranak.vapcode.R;
 import com.example.ranak.vapcode.Ui.vap.Fragment_VAPCODE;
 import com.example.ranak.vapcode.Utility.StartServiceForCheckingCurrentApp;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,8 +29,6 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
     private String AppMode;
     private static boolean RegistrationPhaseOne=true;
     private static List<String> StoredPassword;
-    private boolean flag=true;
-//    private
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,25 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
     private void ActivitiesOfPasswordWordLock(List<String> passwordList,View parentView){
 
         TextView textView = (TextView)this.findViewById(R.id.patternstatus);
+
         if(this.AppMode.equals(ConstantVariables.APP_STATUS_AUTHENTICATE)){
+
+            List<String> accessPassword = new ArrayList<>();
+
+            SharedPreferences SPcheckBoxstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+            int accessPasswordSize = SPcheckBoxstatus.getInt(ConstantVariables.FINAL_PASSWORD_SIZE_KEY_SH,0);
+
+            for(int i=0;i<accessPasswordSize;i++){
+                accessPassword.add(SPcheckBoxstatus.getString(ConstantVariables.FINAL_PASSWORD_KEY_SH+i,null));
+            }
+
+            if(this.matchPassword(accessPassword,passwordList)){
+
+                finish();
+            }
+            else {
+                textView.setText("Incorrect, try again");
+            }
 
         }else{
             if(this.RegistrationPhaseOne){
@@ -74,8 +93,9 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
                     this.RegistrationPhaseOne=true;
                     textView.setText("Password matched");
+
+                    FinalizePassword(passwordList);
                     StartServiceForCheckingCurrentApp.SartServiceForCheckingForgroundAppAndInitializingListener(this,this);
-//                    finish();
 
                 }else {
 
@@ -101,6 +121,19 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
         return true;
     }
 
+    private boolean FinalizePassword(List<String> FinalPassword) {
+
+        SharedPreferences SPcheckBoxstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+        SharedPreferences.Editor editor = SPcheckBoxstatus.edit();
+        editor.putInt(ConstantVariables.FINAL_PASSWORD_SIZE_KEY_SH,FinalPassword.size());
+        for(int i=0;i<FinalPassword.size();i++){
+            editor.putString(ConstantVariables.FINAL_PASSWORD_KEY_SH+i,FinalPassword.get(i));
+        }
+        editor.commit();
+
+        return true;
+    }
+
     @Override
     public void onBackPressed() {
         if(!AppMode.matches(ConstantVariables.APP_STATUS_AUTHENTICATE)){
@@ -109,4 +142,14 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(AppMode.matches(ConstantVariables.APP_STATUS_AUTHENTICATE)){
+            System.exit(0);
+        }else {
+            finish();
+        }
+
+    }
 }

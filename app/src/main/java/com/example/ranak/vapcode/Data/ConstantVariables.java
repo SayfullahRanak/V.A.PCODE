@@ -37,6 +37,10 @@ public class ConstantVariables {
     public static final String EACHCHECKBOXSTATUS = "CHECKBOXSTATUS";
     public static final String CHECKBOXSTATUSPREFERENCE = "CHECKBOXSTATUSPREFERENCE";
 
+    public static final String FINAL_PASSWORD_SHARED_PREF = "FINAL_PASSWORD_SHARED_PREF";
+    public static final String FINAL_PASSWORD_KEY_SH = "FINAL_PASSWORD_KEY";
+    public static final String FINAL_PASSWORD_SIZE_KEY_SH = "FINAL_PASSWORD_SIZE_KEY";
+
     public static List<String> listOfApp = new ArrayList<>();
 
     /*public static final String VAP_SHARED_PREFF = "VAP_SHARED_PREFF";

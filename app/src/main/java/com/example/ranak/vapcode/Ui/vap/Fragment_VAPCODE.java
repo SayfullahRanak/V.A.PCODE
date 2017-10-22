@@ -59,7 +59,6 @@ public class Fragment_VAPCODE extends android.app.Fragment implements VAPCODE.ma
     public void getPassword(List<String> password) {
         this.passList = password;
         mListener.onVAPCODEFragmentInteraction(password,mview);
-//        TextView txt = mview.findViewById(R.id.)
 
     }
 

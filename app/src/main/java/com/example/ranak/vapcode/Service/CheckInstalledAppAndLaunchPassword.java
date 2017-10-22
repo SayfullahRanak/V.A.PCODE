@@ -6,6 +6,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
@@ -41,6 +42,7 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
         checkOnly.add(targetName);
         checkOnly.add("com.lazada.android");
         checkOnly.add("com.google.android.music");
+        final SharedPreferences SPcheckBoxstatus = this.getApplicationContext().getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,this.getApplicationContext().MODE_PRIVATE);
         final Context appContext = this;
 
 
@@ -63,13 +65,21 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
                                 Log.d("Running App",RunningApp+"");*/
 
                                 if(pickData){
+                                    boolean checkboxstatus =SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+CurrentApp,false);
 
-                                    if(checkOnly.contains(CurrentApp)){
+                                    if(checkboxstatus){
                                         RunningApp=CurrentApp;
                                         pickData = false;
                                         receiversProperties.SendingBroadCast();
                                         Log.d("Found my app",CurrentApp);
                                     }
+
+                                    /*if(checkOnly.contains(CurrentApp)){
+                                        RunningApp=CurrentApp;
+                                        pickData = false;
+                                        receiversProperties.SendingBroadCast();
+                                        Log.d("Found my app",CurrentApp);
+                                    }*/
                                 }
 
                                 if(!RunningApp.matches(CurrentApp) && !pickData){
