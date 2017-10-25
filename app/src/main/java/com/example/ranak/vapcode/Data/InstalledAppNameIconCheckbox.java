@@ -7,6 +7,11 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by ranak on 29/9/17.
  * cluster for installed applications name and icons
+ * This class store the
+ * application name
+ * Drawable object the image
+ * Package name of the application
+ * This class also set the checkbox status of this object
  */
 
 public class InstalledAppNameIconCheckbox {
@@ -15,8 +20,6 @@ public class InstalledAppNameIconCheckbox {
     private String packageName;
     private boolean checkBoxStatus;
 
-    /*public  String appName;
-    public  Drawable appIcone;*/
 
     public InstalledAppNameIconCheckbox(String name, Drawable icone, boolean checkStatus,String PakgNam){
 
@@ -42,5 +45,10 @@ public class InstalledAppNameIconCheckbox {
         return checkBoxStatus;
     }
 
+
+    /**
+     * set checkbox status of this object
+     * @param status
+     */
     public  void setCheckboxStatus( boolean status){ this.checkBoxStatus =status ; }
 }

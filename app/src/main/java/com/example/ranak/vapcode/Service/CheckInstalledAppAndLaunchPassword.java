@@ -1,47 +1,45 @@
 package com.example.ranak.vapcode.Service;
 
-import android.app.ActivityManager;
 import android.app.Service;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.ranak.vapcode.Data.ConstantVariables;
 import com.example.ranak.vapcode.Utility.GetForgroundApp;
 import com.example.ranak.vapcode.Utility.ReceiversProperties;
 import com.example.ranak.vapcode.permissions.PermissionToUsageAccess;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+/**
+ * This background service fire the "v.a.p code password activity (LockActivity)"if the running application is one of
+    * the selected applications by user
+ */
+
 public class CheckInstalledAppAndLaunchPassword extends Service {
 
-    private String RunningApp="";
-    /*public CheckInstalledAppAndLaunchPassword() {
-    }*/
+//    private String RunningApp="";
 
 
-//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    /**
+     * Background Service starts from here
+     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCreate() {
-
-//        RunCheckingWithASeparatedThread();
         RunChecking();
         super.onCreate();
-
     }
 
+    /**
+     * with the help of a timer after each 500 msec , the code checks whether the current running Application is
+        * one of the selected applications or not?
+        * If yes, the receiver is called from where the v.a.p code(Lock App) is triggered
+     * @return
+     */
     private boolean RunChecking(){
         final ReceiversProperties receiversProperties  = new ReceiversProperties(getApplicationContext());
         receiversProperties.InitializeReceiver();
@@ -52,27 +50,36 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                //your code
-//                Log.d("Accessed in the : ","Timer");
                 if(PermissionToUsageAccess.hasPermissionTocheckAppData(getApplicationContext())) {
+                    // Current Apllication on the foreground
                     String CurrentApp = GetForgroundApp.forgroundAppAccordingFromUsageState(getApplicationContext());
+
+                    // Check in the listview in the row the applications is checked or not
                     SharedPreferences SPcheckBoxstatus = getApplicationContext().getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE, getApplicationContext().MODE_PRIVATE);
+
+                    // if checkboxstatus is true then current application is on of the selected app, if false then not
                     boolean checkboxstatus = SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS + CurrentApp, false);
 
-
+                    //checking if users correctly given password ("IsPasswordCorrectlyGiven") state
                     SharedPreferences SPCorrectpasswordState = getApplicationContext().getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF, getApplicationContext().MODE_PRIVATE);
-                    boolean IsPasswordCorrectlyGiven = SPCorrectpasswordState.getBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH, false);
-//                    Log.d("is auth state",IsPasswordCorrectlyGiven+"");
-                    if(CurrentApp!=null){
 
+                    boolean IsPasswordCorrectlyGiven = SPCorrectpasswordState.getBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH, false);
+
+                    /**
+                     * CurrentApp will go to null position if any application is opened for a long time
+                     */
+                    if(CurrentApp!=null){
+                        //if The app is selected by user and "IsPasswordCorrectlyGiven" state is false
                         if (checkboxstatus && !IsPasswordCorrectlyGiven) {
-//                            Log.d("Trigerring receiver : ", "vapcode");
                             receiversProperties.SendingBroadCast();
+                            //In "receiversProperties.SendingBroadCast()" "IsPasswordCorrectlyGiven"
+                            // state will became true if password is correctly given
 
                         }else{
+                            //if current app is not v.a.p code and the app is not selected by user,
+                            // then make the IsPasswordCorrectlyGiven false
                             if(!CurrentApp.matches(getPackageName()) && !checkboxstatus){
 
-//                                Log.d("Trigerring receiver : ",CurrentApp+"");
                                 SharedPreferences.Editor editor = SPCorrectpasswordState.edit();
                                 editor.putBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH, false);
                                 editor.commit();
@@ -90,14 +97,6 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
     return true;
     }
 
-    private void SetruningApp(String app){
-        this.RunningApp=app;
-    }
-
-    private String getruningApp(){
-        return this.RunningApp;
-    }
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -111,6 +110,59 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
         final ReceiversProperties receiversProperties  = new ReceiversProperties(this);
         receiversProperties.UnRegisteringBroadCast();
     }
+
+    /*private void SetruningApp(String app){ this.RunningApp=app; }
+
+    private String getruningApp(){ return this.RunningApp; }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private boolean RunCheckingWithASeparatedThread(){

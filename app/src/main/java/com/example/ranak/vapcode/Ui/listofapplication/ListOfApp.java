@@ -30,20 +30,32 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * Created by ranak on 4/10/17.
+ * **** Properties (Activities) of the class*****
+ * get installed application installed in the device
+ * create a list view with those installed application (each row contains image view app name checkbox status)
+ * create a shared reference where each rows status (checked or unchecked) will be updated
+ * show list of only checked (selected) App and all App by pressing separate buttons (All Application / Locked Application) .
+ *
  */
 
 public class ListOfApp extends Activity {
 
-
-    //// need to remove later////
-//    private static List<InstalledAppNameIconCheckbox> listOfnameAppiconfortest;
-
-    //// need to remove later////
-
+    /**
+     * set up list view for each installed applications
+     * set up listener for pressing each row
+     * set up activties for for showing list of only checked (selected) App and all
+        * App by pressing separate buttons (All Application / Locked Application).
+        * If once a button(All Application / Locked Application) is pressed that button will remain inactive until
+        * next button is pressed
+     *
+     * @param mview view of each row
+     * @param mContext application context
+     * @param ApplicationMode
+     * @return
+     */
     protected static boolean settingUpForLockApp(final View mview, final Context mContext, final String ApplicationMode){
-
+        //set the (Locked Application button) first time
         ButtonVisibility(mview,R.id.showallapp);
-
 
         ListView list = setListViewWithAdapter(mview,mContext,0);
 
@@ -218,18 +230,12 @@ public class ListOfApp extends Activity {
 
     private static void setCheckBoxActivity(CheckBox chkbx,String packageNameAsUniqId,Context appContext){
 
-        /*ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
-        ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
-        ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
-        ConstantVariables.listOfApp.add(packageNameAsUniqId+"");*/
 
         if(chkbx.isChecked()){
-//            ConstantVariables.listOfApp.remove(packageNameAsUniqId+"");
             SetCheckBoxStatusAccordingToAppMoode(packageNameAsUniqId,appContext,false);
             chkbx.setChecked(false);
         }
         else{
-//            ConstantVariables.listOfApp.add(packageNameAsUniqId+"");
             SetCheckBoxStatusAccordingToAppMoode(packageNameAsUniqId,appContext,true);
             chkbx.setChecked(true);
         }

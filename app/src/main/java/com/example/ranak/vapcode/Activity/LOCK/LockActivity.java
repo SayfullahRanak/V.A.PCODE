@@ -51,11 +51,12 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
     @Override
     public void onVAPCODEFragmentInteraction(List<String> passwordList,View parentView) {
+        Log.d("in activity pass size",passwordList.size()+"");
         ActivitiesOfPasswordWordLock(passwordList,parentView);
     }
 
     private void ActivitiesOfPasswordWordLock(List<String> passwordList,View parentView){
-
+        Log.d("after going to main",passwordList.size()+"");
         TextView textView = (TextView)this.findViewById(R.id.patternstatus);
 
         if(this.AppMode.equals(ConstantVariables.APP_STATUS_AUTHENTICATE)){
@@ -111,9 +112,11 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
     private boolean matchPassword(List<String> leftSide, List<String> rightSide) {
 
+        if(leftSide.size()!=rightSide.size()){ return false;}
+
         for (int i = 0; i < rightSide.size(); i++) {
 
-            if (!rightSide.get(i).equals(leftSide.get(i))) {
+            if (!(rightSide.get(i).equals(leftSide.get(i)))) {
                 Log.d("new one",leftSide.get(i));
                 Log.d("Old one",rightSide.get(i));
                 return false;

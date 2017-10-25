@@ -5,8 +5,14 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 /**
+ *
  * Created by ranak on 29/9/17.
  * cluster for installed applications name and icons
+ * This class store the
+ * application name
+ * Drawable object the image
+ * Package name of the application
+ *
  */
 
 public class InstalledAppNameIcon {
@@ -14,8 +20,6 @@ public class InstalledAppNameIcon {
     private Drawable appIcone;
     private String packageName;
 
-    /*public  String appName;
-    public  Drawable appIcone;*/
 
     public InstalledAppNameIcon(String name, Drawable icone , String pakgnm){
 

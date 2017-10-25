@@ -9,10 +9,6 @@ import java.util.List;
 
 public class ConstantVariables {
 
-    /*public static final String EACHCHECKBOXSTATUS = "CHECKBOXSTATUS";
-    public static final String APPLICATIONMOODPREFERENCE = "APPMOODPREFERENCE";
-    public static final String APPLICATIONMOOD = "APPMOOD";
-    public static final String APPLICATIONMOODFIRSTTIME = "APPMOODFIRSTTIME";*/
 
 
     public static final String APPLICATION_MOOD_SHARED_PREFERENCE = "APPLICATIONMOODSHAREDPREFERENCE";
@@ -27,11 +23,6 @@ public class ConstantVariables {
     public static final String LIST_OF_APP_FRAGMENT_TAG = "LISTOFAPPFRAGMENTTAG";
     public static final String SETTINGS_FRAGMENT_TAG = "SETTINGSFRAGMENT";
 
-    public static final String HELP_FRAGMENT_TAG = "HELPFRAGMENT";
-    public static final String PRIVACYPOLICY_FRAGMENT_TAG = "PRIVACYPOLICYFRAGMENT";
-
-
-    public static final String LISTOFAAPPFRAGMENT_TO_ANY_ACTIVITY_INTENT_VALUE_KEY = "LISTOFAAPPFRAGMENTTOANYACTIVITYINTENTKEY";
     public static final String LOCKFRAGMENTTAG = "LOCKFRAGMENT";
 
     public static final String EACHCHECKBOXSTATUS = "CHECKBOXSTATUS";
@@ -44,28 +35,34 @@ public class ConstantVariables {
 
     public static List<String> listOfApp = new ArrayList<>();
 
-    /*public static final String VAP_SHARED_PREFF = "VAP_SHARED_PREFF";
-    public static final String VAP_SHARED_PREFF_ACCESS_PREFF = "VAP_ACCESS_PREFF";
-    public static final String VAP_SHARED_PREFF_ACCESS_ALREADY_ACCESSED_ONCE = "ACCESS_ALREADY_ACCESSED_ONCE";*/
-    //////////////////////////////////////////////////////////////////////////////////////////
-
-
-    /*public static final String PASSWORDMODENORMAL = "NORMAL";
-    public static final String PASSWORDMODERESETPASSWORD = "RESETPASSWORD";
-    public static final String PASSWORDREGISTERMODEFIRSTTIME = PASSWORDMODENORMAL;
-
-    public static final String APPSTATUS = "APPLICATIONSTATUS";
-
-    public static final String PASSWORDMOOD = PASSWORDMODENORMAL;
-    public static final String PASSWORDREGISTERMODE = PASSWORDMODENORMAL;*/
-//    public static boolean passwordGivenFirstTime=false;
-
-
-
-
-
 
 }
 
 
-//com.android.launcher3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public static final String HELP_FRAGMENT_TAG = "HELPFRAGMENT";
+    public static final String PRIVACYPOLICY_FRAGMENT_TAG = "PRIVACYPOLICYFRAGMENT";
+
+
+    public static final String LISTOFAAPPFRAGMENT_TO_ANY_ACTIVITY_INTENT_VALUE_KEY = "LISTOFAAPPFRAGMENTTOANYACTIVITYINTENTKEY";*/
+

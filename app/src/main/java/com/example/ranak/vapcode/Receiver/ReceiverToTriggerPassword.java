@@ -13,6 +13,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * Created by ranak on 20/10/17.
+ * This receiver class will launch the V.a.p Code Activity (LockActivity)
  */
 
 public class ReceiverToTriggerPassword extends BroadcastReceiver {

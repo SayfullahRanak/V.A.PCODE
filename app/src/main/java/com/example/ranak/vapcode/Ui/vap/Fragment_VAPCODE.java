@@ -2,6 +2,7 @@ package com.example.ranak.vapcode.Ui.vap;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +41,21 @@ public class Fragment_VAPCODE extends android.app.Fragment implements VAPCODE.ma
         return mview;
     }
 
-
-
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mContext=context;
+        mListener = (OnFragmentInteractionListener) context;
+
+        /*if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }*/
+    }
+
+        /*@Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext=context;
@@ -52,13 +65,14 @@ public class Fragment_VAPCODE extends android.app.Fragment implements VAPCODE.ma
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
+    }*/
 
 
     @Override
     public void getPassword(List<String> password) {
         this.passList = password;
-        mListener.onVAPCODEFragmentInteraction(password,mview);
+        Log.d("Size of Password",passList.size()+"");
+        mListener.onVAPCODEFragmentInteraction(passList,mview);
 
     }
 
