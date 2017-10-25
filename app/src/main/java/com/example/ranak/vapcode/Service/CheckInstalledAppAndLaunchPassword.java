@@ -21,14 +21,14 @@ import com.example.ranak.vapcode.permissions.PermissionToUsageAccess;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CheckInstalledAppAndLaunchPassword extends Service {
 
-    String targetName="com.soundcloud.android";
-    List<String> checkOnly = new ArrayList<>();
-
-    public CheckInstalledAppAndLaunchPassword() {
-    }
+    private String RunningApp="";
+    /*public CheckInstalledAppAndLaunchPassword() {
+    }*/
 
 
 //    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -36,68 +36,68 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
     @Override
     public void onCreate() {
 
+//        RunCheckingWithASeparatedThread();
+        RunChecking();
+        super.onCreate();
+
+    }
+
+    private boolean RunChecking(){
         final ReceiversProperties receiversProperties  = new ReceiversProperties(getApplicationContext());
         receiversProperties.InitializeReceiver();
 
-        checkOnly.add(targetName);
-        checkOnly.add("com.lazada.android");
-        checkOnly.add("com.google.android.music");
-        final SharedPreferences SPcheckBoxstatus = this.getApplicationContext().getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,this.getApplicationContext().MODE_PRIVATE);
-        final Context appContext = this;
+
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void run() {
+                //your code
+//                Log.d("Accessed in the : ","Timer");
+                if(PermissionToUsageAccess.hasPermissionTocheckAppData(getApplicationContext())) {
+                    String CurrentApp = GetForgroundApp.forgroundAppAccordingFromUsageState(getApplicationContext());
+                    SharedPreferences SPcheckBoxstatus = getApplicationContext().getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE, getApplicationContext().MODE_PRIVATE);
+                    boolean checkboxstatus = SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS + CurrentApp, false);
 
 
-            final Thread cheeckforApp = new Thread(){
+                    SharedPreferences SPCorrectpasswordState = getApplicationContext().getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF, getApplicationContext().MODE_PRIVATE);
+                    boolean IsPasswordCorrectlyGiven = SPCorrectpasswordState.getBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH, false);
+//                    Log.d("is auth state",IsPasswordCorrectlyGiven+"");
+                    if(CurrentApp!=null){
 
-                @Override
-                public void run() {
-                    super.run();
-                    String RunningApp="";
-                    boolean pickData=true;
-                    while (true){
+                        if (checkboxstatus && !IsPasswordCorrectlyGiven) {
+//                            Log.d("Trigerring receiver : ", "vapcode");
+                            receiversProperties.SendingBroadCast();
 
-                        if(PermissionToUsageAccess.hasPermissionTocheckAppData(appContext)) {
-                            String CurrentApp = GetForgroundApp.forgroundAppAccordingFromUsageState(appContext);
-                            //Log.d("Current App",CurrentApp+"");
+                        }else{
+                            if(!CurrentApp.matches(getPackageName()) && !checkboxstatus){
 
-
-                            if(CurrentApp!=null){
-                                /*Log.d("Current App",CurrentApp+"");
-                                Log.d("Running App",RunningApp+"");*/
-
-                                if(pickData){
-                                    boolean checkboxstatus =SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+CurrentApp,false);
-
-                                    if(checkboxstatus){
-                                        RunningApp=CurrentApp;
-                                        pickData = false;
-                                        receiversProperties.SendingBroadCast();
-                                        Log.d("Found my app",CurrentApp);
-                                    }
-
-                                    /*if(checkOnly.contains(CurrentApp)){
-                                        RunningApp=CurrentApp;
-                                        pickData = false;
-                                        receiversProperties.SendingBroadCast();
-                                        Log.d("Found my app",CurrentApp);
-                                    }*/
-                                }
-
-                                if(!RunningApp.matches(CurrentApp) && !pickData){
-                                    pickData=true;
-                                }
+//                                Log.d("Trigerring receiver : ",CurrentApp+"");
+                                SharedPreferences.Editor editor = SPCorrectpasswordState.edit();
+                                editor.putBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH, false);
+                                editor.commit();
 
                             }
-
                         }
                     }
 
                 }
-            };
-            cheeckforApp.start();
 
-        super.onCreate();
+            }
+        };
+    timer.schedule(timerTask, 0, 500);
 
+    return true;
     }
+
+    private void SetruningApp(String app){
+        this.RunningApp=app;
+    }
+
+    private String getruningApp(){
+        return this.RunningApp;
+    }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -111,6 +111,70 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
         final ReceiversProperties receiversProperties  = new ReceiversProperties(this);
         receiversProperties.UnRegisteringBroadCast();
     }
+
+    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private boolean RunCheckingWithASeparatedThread(){
+
+        final ReceiversProperties receiversProperties  = new ReceiversProperties(getApplicationContext());
+        receiversProperties.InitializeReceiver();
+
+        final SharedPreferences SPcheckBoxstatus = this.getApplicationContext().getSharedPreferences(ConstantVariables.CHECKBOXSTATUSPREFERENCE,this.getApplicationContext().MODE_PRIVATE);
+        final Context appContext = this;
+
+
+        final Thread cheeckforApp = new Thread(){
+
+            @Override
+            public void run() {
+                super.run();
+                String RunningApp="";
+                boolean pickData=true;
+                while (true){
+
+                    if(PermissionToUsageAccess.hasPermissionTocheckAppData(appContext)) {
+
+
+                        String CurrentApp = GetForgroundApp.forgroundAppAccordingFromUsageState(appContext);
+                        Log.d("Current App",CurrentApp+"");
+
+                        SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+                        boolean IsPassWordCorrectlyGiven = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_IsAuthenticated_KEY_SH,false);
+//                        Log.d("IsPasswordCorrect : ",IsPassWordCorrectlyGiven+"");
+
+                        if(CurrentApp!=null){
+                            if(pickData){
+
+                                boolean checkboxstatus =SPcheckBoxstatus.getBoolean(ConstantVariables.EACHCHECKBOXSTATUS+CurrentApp,false);
+
+                                if(checkboxstatus){
+                                    Log.d("Found my app",CurrentApp);
+                                    RunningApp=CurrentApp;
+                                    pickData = false;
+                                    receiversProperties.SendingBroadCast();
+
+                                }
+                            }
+                            if(!RunningApp.matches(CurrentApp) && !pickData && !IsPassWordCorrectlyGiven){
+
+                                pickData=true;
+                                SharedPreferences.Editor editor = SPAuthenticationstatus.edit();
+                                editor.putBoolean(ConstantVariables.FINAL_PASSWORD_IsAuthenticated_KEY_SH,false);
+                                editor.commit();
+
+
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+        };
+        cheeckforApp.start();
+
+        return true;
+    }*/
 }
 
 

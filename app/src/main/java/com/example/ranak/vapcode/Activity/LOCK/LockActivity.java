@@ -33,7 +33,6 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -50,7 +49,6 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
     }
 
-
     @Override
     public void onVAPCODEFragmentInteraction(List<String> passwordList,View parentView) {
         ActivitiesOfPasswordWordLock(passwordList,parentView);
@@ -64,15 +62,20 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
             List<String> accessPassword = new ArrayList<>();
 
-            SharedPreferences SPcheckBoxstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
-            int accessPasswordSize = SPcheckBoxstatus.getInt(ConstantVariables.FINAL_PASSWORD_SIZE_KEY_SH,0);
+            SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+            int accessPasswordSize = SPAuthenticationstatus.getInt(ConstantVariables.FINAL_PASSWORD_SIZE_KEY_SH,0);
 
             for(int i=0;i<accessPasswordSize;i++){
-                accessPassword.add(SPcheckBoxstatus.getString(ConstantVariables.FINAL_PASSWORD_KEY_SH+i,null));
+                accessPassword.add(SPAuthenticationstatus.getString(ConstantVariables.FINAL_PASSWORD_KEY_SH+i,null));
             }
 
             if(this.matchPassword(accessPassword,passwordList)){
 
+                SharedPreferences.Editor editor = SPAuthenticationstatus.edit();
+                editor.putBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH,true);
+                editor.commit();
+                //Matched
+//                Log.d("Authentication state",SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_IsAuthenticated_KEY_SH,false)+"");
                 finish();
             }
             else {
@@ -104,8 +107,6 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
             }
 
         }
-
-
     }
 
     private boolean matchPassword(List<String> leftSide, List<String> rightSide) {
@@ -145,11 +146,7 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
     @Override
     protected void onPause() {
         super.onPause();
-        if(AppMode.matches(ConstantVariables.APP_STATUS_AUTHENTICATE)){
-            System.exit(0);
-        }else {
-            finish();
-        }
+        finish();
 
     }
 }

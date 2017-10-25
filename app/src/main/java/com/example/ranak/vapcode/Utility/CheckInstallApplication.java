@@ -43,7 +43,10 @@ public class CheckInstallApplication {
                 appName = packageInfo.applicationInfo.loadLabel(appContext.getPackageManager()).toString();
                 appicon = packageInfo.applicationInfo.loadIcon(appContext.getPackageManager());
                 packageName=packageInfo.packageName;
-                installedApplication.add(new InstalledAppNameIcon(appName,appicon,packageName));
+                if(!packageName.matches(appContext.getApplicationContext().getPackageName())){
+                    installedApplication.add(new InstalledAppNameIcon(appName,appicon,packageName));
+                }
+
 
             }
         }

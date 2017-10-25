@@ -19,7 +19,7 @@ public class ReceiverToTriggerPassword extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("Size of password",ConstantVariables.listOfApp.size()+"");
+//        Log.d("Size of password",ConstantVariables.listOfApp.size()+"");
         Intent passwordIntend = new Intent();
 
         passwordIntend.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
