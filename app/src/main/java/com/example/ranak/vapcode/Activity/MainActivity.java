@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,15 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import com.example.ranak.vapcode.Data.ConstantVariables;
 import com.example.ranak.vapcode.Ui.listofapplication.Fragment_ListOfAppToLock;
 import com.example.ranak.vapcode.R;
 import com.example.ranak.vapcode.Ui.settings.Fragment_Settings;
+import com.example.ranak.vapcode.Utility.StartServiceForCheckingCurrentApp;
 
 /**
- *MainActivity
+ ************MainActivity*************
  * @author Md Sayfullah Al Noman Ranak
  * @version 1.0
  * **********Description***************
@@ -34,6 +38,8 @@ import com.example.ranak.vapcode.Ui.settings.Fragment_Settings;
  *  Handles the navigation Drawer
  *  Handles the appearance of each fragment when pressing each button of navigation drawer
  */
+
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity
      *
      * @param savedInstanceState
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity
 
         // Getting and setting the Application mood (whether the application is opened for first time or already
             // opened before)
+
         SharedPreferences AppCurrentMode = getSharedPreferences(ConstantVariables.APPLICATION_MOOD_SHARED_PREFERENCE,MODE_PRIVATE);
         SharedPreferences.Editor editor = AppCurrentMode.edit();
 
@@ -102,6 +110,16 @@ public class MainActivity extends AppCompatActivity
         //"Lock App" is the button from the menu(Buttons) of drawer which will be auto pressed when the
         // application will first launch
         navigationView.setCheckedItem(R.id.nav_lockapp);
+
+        SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+        final boolean IsRegistrationComplete = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,false);
+
+
+        if(IsRegistrationComplete){
+
+            Button setPassword = (Button) findViewById(R.id.setPassword);
+            setPassword.setVisibility(View.GONE);
+        }
 
     }
 
@@ -227,6 +245,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -249,5 +268,28 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+        final boolean IsRegistrationComplete = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,false);
+        Log.d("Enter the resume",IsRegistrationComplete+"");
+
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+
+                if(IsRegistrationComplete){
+                    if(!isFinishing()){
+                        StartServiceForCheckingCurrentApp.SartServiceForCheckingForgroundAppAndInitializingListener(MainActivity.this);
+                    }
+
+                }
+            }
+        }, 200);
+
+
+    }
 
 }

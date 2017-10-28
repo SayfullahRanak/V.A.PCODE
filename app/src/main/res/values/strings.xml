@@ -15,6 +15,7 @@
     <string name="listofapplock_Locked_App">Locked App</string>
     <string name="listofapplock_All_App">All App</string>
     <string name="listofapplock_Set_Password">Set Password</string>
+    <string name="Reset_Password">Reset</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_test">test</string>

@@ -32,6 +32,9 @@ public class ConstantVariables {
     public static final String FINAL_PASSWORD_KEY_SH = "FINAL_PASSWORD_KEY";
     public static final String FINAL_PASSWORD_SIZE_KEY_SH = "FINAL_PASSWORD_SIZE_KEY";
     public static final String FINAL_PASSWORD_IsAuth_KEY_SH = "FINAL_PASSWORD_IsAuth_KEY";
+    public static final String FINAL_PASSWORD_REGISTRATION_COMPLETE = "FINAL_PASSWORD_REGISTRATION_COMPLETE";
+    public static final String FINAL_PASSWORD_RESET_PASSWORD = "FINAL_PASSWORD_RESET_PASSWORD";
+
 
     public static List<String> listOfApp = new ArrayList<>();
 

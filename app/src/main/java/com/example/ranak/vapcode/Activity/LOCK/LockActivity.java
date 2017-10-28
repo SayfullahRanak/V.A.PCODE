@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ranak.vapcode.Data.ConstantVariables;
@@ -22,13 +23,24 @@ import com.example.ranak.vapcode.Utility.StartServiceForCheckingCurrentApp;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ ******** activities *************
+ * receives password from v.a.p code fragment
+ * There will two activities of this activity (it will decided based on the app mood, which will be received when this activity is called)
+    * Registration (when app mood=="registration")
+        *Here password will be taken twice from the user
+        * Finally password will be stored in the shared preference
+    * Authentication (when app mood=="authentication")
+        * Here the given password will be matched by password which was stored previously in the shared preference
+ */
 public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.OnFragmentInteractionListener{
 
-    private boolean passwordGivenFirstTime=false;
     private String AppMode;
     private static boolean RegistrationPhaseOne=true;
     private static List<String> StoredPassword;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,31 +51,45 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
         Intent intent = getIntent();
         this.AppMode = intent.getStringExtra(ConstantVariables.APPLICATION_MOOD_KEY_INTENT);
         setContentView(R.layout.activity_lock);
-
+        Button resetPasword = (Button)findViewById(R.id.resetpassword);
         Fragment fragment = new Fragment_VAPCODE();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.activity_lock,fragment, ConstantVariables.LOCKFRAGMENTTAG);
         ft.commit();
 
-
     }
 
+    public void onResetPassword(View view){
+        TextView textView = (TextView)this.findViewById(R.id.patternstatus);
+        this.RegistrationPhaseOne=true;
+        textView.setText(" ");
+    }
+    /**
+     * receives data from the password fragment(v.a.p code) which is attached to this activity
+     * @param passwordList
+     * @param parentView
+     */
     @Override
     public void onVAPCODEFragmentInteraction(List<String> passwordList,View parentView) {
-        Log.d("in activity pass size",passwordList.size()+"");
         ActivitiesOfPasswordWordLock(passwordList,parentView);
     }
 
+
     private void ActivitiesOfPasswordWordLock(List<String> passwordList,View parentView){
-        Log.d("after going to main",passwordList.size()+"");
+
         TextView textView = (TextView)this.findViewById(R.id.patternstatus);
+        Button resetPassword = (Button) findViewById(R.id.resetpassword);
+
+        SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+        SharedPreferences.Editor editor = SPAuthenticationstatus.edit();
+
 
         if(this.AppMode.equals(ConstantVariables.APP_STATUS_AUTHENTICATE)){
-
+            resetPassword.setVisibility(View.GONE);
             List<String> accessPassword = new ArrayList<>();
 
-            SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+
             int accessPasswordSize = SPAuthenticationstatus.getInt(ConstantVariables.FINAL_PASSWORD_SIZE_KEY_SH,0);
 
             for(int i=0;i<accessPasswordSize;i++){
@@ -72,34 +98,34 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
             if(this.matchPassword(accessPassword,passwordList)){
 
-                SharedPreferences.Editor editor = SPAuthenticationstatus.edit();
+
                 editor.putBoolean(ConstantVariables.FINAL_PASSWORD_IsAuth_KEY_SH,true);
-                editor.commit();
-                //Matched
-//                Log.d("Authentication state",SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_IsAuthenticated_KEY_SH,false)+"");
+
                 finish();
             }
             else {
                 textView.setText("Incorrect, try again");
             }
 
-        }else{
-            if(this.RegistrationPhaseOne){
+        }
 
+        else{
+
+            if(this.RegistrationPhaseOne){
+                resetPassword.setVisibility(View.VISIBLE);
                 textView.setText("Confirm again");
 
                 this.StoredPassword=passwordList;
                 this.RegistrationPhaseOne=false;
 
             }else{
-
                 if(this.matchPassword(this.StoredPassword,passwordList)){
 
                     this.RegistrationPhaseOne=true;
                     textView.setText("Password matched");
-
+                    editor.putBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,true);
                     FinalizePassword(passwordList);
-                    StartServiceForCheckingCurrentApp.SartServiceForCheckingForgroundAppAndInitializingListener(this,this);
+                    finish();
 
                 }else {
 
@@ -108,6 +134,7 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
             }
 
         }
+        editor.commit();
     }
 
     private boolean matchPassword(List<String> leftSide, List<String> rightSide) {
@@ -137,6 +164,8 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
         return true;
     }
+
+
 
     @Override
     public void onBackPressed() {

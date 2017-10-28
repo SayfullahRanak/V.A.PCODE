@@ -1,5 +1,6 @@
 package com.example.ranak.vapcode.Ui.vap;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,21 +42,21 @@ public class Fragment_VAPCODE extends android.app.Fragment implements VAPCODE.ma
         return mview;
     }
 
-    @Override
+    /*@Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext=context;
         mListener = (OnFragmentInteractionListener) context;
 
-        /*if (context instanceof OnFragmentInteractionListener) {
+        *//*if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
-    }
+        }*//*
+    }*/
 
-        /*@Override
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext=context;
@@ -65,13 +66,24 @@ public class Fragment_VAPCODE extends android.app.Fragment implements VAPCODE.ma
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }*/
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mContext=activity.getApplicationContext();
+        if (activity instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
 
     @Override
     public void getPassword(List<String> password) {
         this.passList = password;
-        Log.d("Size of Password",passList.size()+"");
         mListener.onVAPCODEFragmentInteraction(passList,mview);
 
     }

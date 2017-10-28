@@ -17,10 +17,6 @@
             android:id="@+id/Settings_z">
 
         </ListView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello world"/>
 
     </LinearLayout>
 
