@@ -16,7 +16,9 @@
         android:text="@string/Reset_Password"
         android:id="@+id/resetpassword"
         android:onClick="onResetPassword"
-        android:visibility="gone"/>
+        android:visibility="invisible"
+        android:enabled="false"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

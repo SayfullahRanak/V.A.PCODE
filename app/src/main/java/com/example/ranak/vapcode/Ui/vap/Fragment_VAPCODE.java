@@ -17,8 +17,6 @@ public class Fragment_VAPCODE extends android.app.Fragment implements VAPCODE.ma
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onVAPCODEFragmentInteraction(List<String > passwordList,View parentView);

@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_main"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     >
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_weight="1"
+       android:id="@+id/content_main"
+       android:gravity="center|bottom"
+       android:orientation="vertical" >
+
+
+      </LinearLayout>
+
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="@string/listofapplock_Set_Password"
+       android:layout_marginRight="40dp"
+       android:layout_marginLeft="40dp"
+       android:gravity="center"
+       android:id="@+id/setPassword"
+       android:onClick="onSetPassword"
+       />
 
    <!-- <fragment
             android:name="com.example.ranak.vapcode.Ui.ListOfApplication.Fragment_ListOfAppToLock"
@@ -14,3 +37,13 @@
             android:id="@+id/mainFragment"
             tools:layout="@layout/fragment_listofapptolock" />-->
 </LinearLayout>
+
+
+<!--
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:id="@+id/content_main"
+android:orientation="vertical">
+
+</LinearLayout>-->

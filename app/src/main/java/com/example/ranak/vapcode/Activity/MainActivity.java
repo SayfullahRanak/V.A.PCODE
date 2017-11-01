@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,11 +21,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.example.ranak.vapcode.Activity.LOCK.LockActivity;
 import com.example.ranak.vapcode.Data.ConstantVariables;
 import com.example.ranak.vapcode.Ui.listofapplication.Fragment_ListOfAppToLock;
 import com.example.ranak.vapcode.R;
 import com.example.ranak.vapcode.Ui.settings.Fragment_Settings;
 import com.example.ranak.vapcode.Utility.StartServiceForCheckingCurrentApp;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  ************MainActivity*************
@@ -58,6 +62,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Checking if the registration is complete or not
+        // ask for password if registration is complete before
+        /*SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+        final boolean IsRegistrationComplete = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,false);
+        Log.d("Accessed in oncreat","yes true");
+        if(IsRegistrationComplete){
+            Intent passwordIntend = new Intent();
+
+            passwordIntend.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            passwordIntend.setClass(this, LockActivity.class);
+            passwordIntend.putExtra(ConstantVariables.APPLICATION_MOOD_KEY_INTENT,ConstantVariables.APP_STATUS_AUTHENTICATE);
+            startActivity(passwordIntend);
+
+        }*/
 
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
@@ -78,20 +97,12 @@ public class MainActivity extends AppCompatActivity
         // Getting and setting the Application mood (whether the application is opened for first time or already
             // opened before)
 
-        SharedPreferences AppCurrentMode = getSharedPreferences(ConstantVariables.APPLICATION_MOOD_SHARED_PREFERENCE,MODE_PRIVATE);
-        SharedPreferences.Editor editor = AppCurrentMode.edit();
+        /*SharedPreferences AppCurrentMode = getSharedPreferences(ConstantVariables.APPLICATION_MOOD_SHARED_PREFERENCE,MODE_PRIVATE);
+        SharedPreferences.Editor editor = AppCurrentMode.edit();*/
 
-        ApplicationMode = AppCurrentMode.getString(ConstantVariables.APPLICATION_MOOD_KEY_SH,null);
-
-        if(ApplicationMode==null ){
-            this.ApplicationMode=ConstantVariables.APPSTATUSFIRSTTIME;
-            editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSFIRSTTIME);
-        }else {
-            this.ApplicationMode=ConstantVariables.APPSTATUSCONSECUTIVE;
-            editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSCONSECUTIVE);
-        }
-        editor.commit();
-
+        /*ApplicationMode = AppCurrentMode.getString(ConstantVariables.APPLICATION_MOOD_KEY_SH,null);
+        editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSFIRSTTIME);
+        editor.commit();*/
 
         //Activity is empty now, a fragment will be added, and it will be appear when the application will be
             //first launched
@@ -99,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle= new Bundle();
 
         //sending the Application mood to the next activity
-        bundle.putCharSequence(ConstantVariables.BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY,ApplicationMode);
+        bundle.putCharSequence(ConstantVariables.BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY,ConstantVariables.APP_STATUS_FIRSTTIME);
         fragment.setArguments(bundle);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -110,16 +121,6 @@ public class MainActivity extends AppCompatActivity
         //"Lock App" is the button from the menu(Buttons) of drawer which will be auto pressed when the
         // application will first launch
         navigationView.setCheckedItem(R.id.nav_lockapp);
-
-        SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
-        final boolean IsRegistrationComplete = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,false);
-
-
-        if(IsRegistrationComplete){
-
-            Button setPassword = (Button) findViewById(R.id.setPassword);
-            setPassword.setVisibility(View.GONE);
-        }
 
     }
 
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity
             FragmentTag=ConstantVariables.SETTINGS_FRAGMENT_TAG;
 
 
+
         } else if (id == R.id.nav_lockapp) {
 
             fragment = new Fragment_ListOfAppToLock();
@@ -193,7 +195,24 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
 
         // finalize the fragment , and make it appear which was selected in the above if condition
+
+
         if(fragment!=null){
+//            Log.d("enter into the",FragmentTag+"");
+            if(FragmentTag.matches(ConstantVariables.LIST_OF_APP_FRAGMENT_TAG)){
+
+                SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
+                boolean IsRegistrationComplete = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,false);
+
+                if(!IsRegistrationComplete){
+                    setVisibilityForSET_PASSWORD_BUTTON(true);
+                }
+
+            }else {
+                Log.d("enter into the",FragmentTag+"");
+                setVisibilityForSET_PASSWORD_BUTTON(false);
+            }
+
 
             Bundle bundle= new Bundle();
             bundle.putCharSequence(ConstantVariables.BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY,ApplicationMode);
@@ -275,13 +294,23 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences SPAuthenticationstatus = getSharedPreferences(ConstantVariables.FINAL_PASSWORD_SHARED_PREF,MODE_PRIVATE);
         final boolean IsRegistrationComplete = SPAuthenticationstatus.getBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,false);
         Log.d("Enter the resume",IsRegistrationComplete+"");
+        if(IsRegistrationComplete){
+            /*Button setPassword = (Button) findViewById(R.id.setPassword);
 
+            if(setPassword!=null && setPassword.getVisibility()==View.VISIBLE){
+
+                setPassword.setVisibility(View.GONE);
+            }*/
+            setVisibilityForSET_PASSWORD_BUTTON(false);
+        }
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
 
                 if(IsRegistrationComplete){
+
                     if(!isFinishing()){
+
                         StartServiceForCheckingCurrentApp.SartServiceForCheckingForgroundAppAndInitializingListener(MainActivity.this);
                     }
 
@@ -292,4 +321,41 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("Entered in ","on stopped");
+    }
+
+    public void onSetPassword(View view){
+
+        Intent passwordIntend = new Intent();
+        passwordIntend.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        passwordIntend.putExtra(ConstantVariables.APPLICATION_MOOD_KEY_INTENT,ConstantVariables.APP_STATUS_FIRSTTIME);
+        passwordIntend.setClass(this, LockActivity.class);
+//                ((Activity)mContext).startActivityForResult(passwordIntend,0);
+        startActivity(passwordIntend);
+    }
+    private void setVisibilityForSET_PASSWORD_BUTTON(boolean state){
+        Button setPassword = (Button) findViewById(R.id.setPassword);
+
+        if(setPassword!=null){
+
+            if(state && setPassword.getVisibility()==View.GONE ){
+                setPassword.setVisibility(View.VISIBLE);
+            }else if(!state && setPassword.getVisibility()==View.VISIBLE ){
+                setPassword.setVisibility(View.GONE);
+            }
+        }
+    }
+
 }
+
+
+/*if(ApplicationMode==null ){
+            this.ApplicationMode=ConstantVariables.APPSTATUSFIRSTTIME;
+            editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSFIRSTTIME);
+        }else {
+            this.ApplicationMode=ConstantVariables.APPSTATUSCONSECUTIVE;
+            editor.putString(ConstantVariables.APPLICATION_MOOD_KEY_SH,ConstantVariables.APPSTATUSCONSECUTIVE);
+        }*/

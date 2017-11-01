@@ -13,9 +13,10 @@ public class ConstantVariables {
 
     public static final String APPLICATION_MOOD_SHARED_PREFERENCE = "APPLICATIONMOODSHAREDPREFERENCE";
     public static final String APPLICATION_MOOD_KEY_SH = "APPMOODKEY";
-    public static final String APPSTATUSFIRSTTIME = "APPLICATIONSTATUSFIRSTTIME";
+    public static final String APP_STATUS_FIRSTTIME = "APPLICATIONSTATUSFIRSTTIME";
     public static final String APPSTATUSCONSECUTIVE = "APPLICATIONSTATUSCONSECUTIVE";
     public static final String APP_STATUS_AUTHENTICATE = "APPSTATUSAUTHENTICATE";
+    public static final String APP_STATUS_STOPPED = "APPSTATUSTOPPED";
 
     public static final String APPLICATION_MOOD_KEY_INTENT = "APPMOODKEY";
     public static final String BUND_MAINACTIVITY_TO_ANY_FRAGMENT_KEY = "BUNDLETOFRAGMENTPREF";

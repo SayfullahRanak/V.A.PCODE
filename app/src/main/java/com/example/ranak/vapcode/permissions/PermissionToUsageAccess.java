@@ -34,8 +34,7 @@ public class PermissionToUsageAccess {
 
         AppOpsManager appOps = (AppOpsManager) appContext.getSystemService(Context.APP_OPS_SERVICE);
         int mood = appOps.checkOp(OPSTR_GET_USAGE_STATS,android.os.Process.myUid(),appContext.getPackageName());
-        Log.d("appContextNoProblem",mood+"");
-        //return true is mood = MODE_ALLOWED, false if not
+        //Log.d("appContextNoProblem",mood+"");
         return (mood == MODE_ALLOWED);
 
     }

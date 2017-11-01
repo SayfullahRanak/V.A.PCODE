@@ -57,6 +57,9 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.activity_lock,fragment, ConstantVariables.LOCKFRAGMENTTAG);
         ft.commit();
+        if(this.AppMode.matches(ConstantVariables.APP_STATUS_FIRSTTIME) || this.AppMode.matches(ConstantVariables.FINAL_PASSWORD_RESET_PASSWORD)){
+            this.RegistrationPhaseOne = true;
+        }
 
     }
 
@@ -72,6 +75,7 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
      */
     @Override
     public void onVAPCODEFragmentInteraction(List<String> passwordList,View parentView) {
+
         ActivitiesOfPasswordWordLock(passwordList,parentView);
     }
 
@@ -86,7 +90,7 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
 
         if(this.AppMode.equals(ConstantVariables.APP_STATUS_AUTHENTICATE)){
-            resetPassword.setVisibility(View.GONE);
+//            resetPassword.setVisibility(View.GONE);
             List<String> accessPassword = new ArrayList<>();
 
 
@@ -113,6 +117,7 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
 
             if(this.RegistrationPhaseOne){
                 resetPassword.setVisibility(View.VISIBLE);
+                resetPassword.setEnabled(true);
                 textView.setText("Confirm again");
 
                 this.StoredPassword=passwordList;
@@ -125,6 +130,7 @@ public class LockActivity extends AppCompatActivity implements Fragment_VAPCODE.
                     textView.setText("Password matched");
                     editor.putBoolean(ConstantVariables.FINAL_PASSWORD_REGISTRATION_COMPLETE,true);
                     FinalizePassword(passwordList);
+
                     finish();
 
                 }else {

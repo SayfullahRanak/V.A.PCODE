@@ -50,18 +50,23 @@
             android:gravity="center|bottom"
             android:orientation="vertical" >
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/listofapplock_Set_Password"
-                android:layout_marginRight="40dp"
-                android:layout_marginLeft="40dp"
-                android:gravity="center"
-                android:id="@+id/setPassword"
-                />
+
 
         </LinearLayout>
 
     </LinearLayout>
 
 </FrameLayout>
+
+
+<!--
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+
+android:text="@string/listofapplock_Set_Password"
+android:layout_marginRight="40dp"
+android:layout_marginLeft="40dp"
+android:gravity="center"
+android:id="@+id/setPassword"
+    />-->

@@ -120,21 +120,6 @@ public class ListOfApp extends Activity {
             }
         });
 
-        Button SetPassword = (Button)mview.findViewById(R.id.setPassword);
-        SetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent passwordIntend = new Intent();
-                passwordIntend.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                passwordIntend.putExtra(ConstantVariables.APPLICATION_MOOD_KEY_INTENT,ApplicationMode);
-                passwordIntend.setClass(mContext, LockActivity.class);
-//                ((Activity)mContext).startActivityForResult(passwordIntend,0);
-                mContext.getApplicationContext().startActivity(passwordIntend);
-
-            }
-        });
-
-
         return true;
     }
 

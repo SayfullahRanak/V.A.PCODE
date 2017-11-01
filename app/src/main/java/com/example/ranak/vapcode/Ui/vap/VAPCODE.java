@@ -24,7 +24,6 @@ public class VAPCODE {
 
 
 
-
     private static List<int[]> rowList ;
     int t=0;
     private  static float prev_startX=0;
@@ -86,16 +85,70 @@ public class VAPCODE {
         rowList = new ArrayList<int[]>();
         //touch listener for the first button (left top)
 
+
+
+
         drawView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction() & MotionEvent.ACTION_MASK;
+//                int action = event.getAction() & MotionEvent.ACTION_MASK;
+                int action = event.getActionMasked();
 
                 //Log.d("CV", "Action ["+action+"]");
                 switch(action) {
-                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_DOWN:{
+
+                        Log.d("In action down ", System.currentTimeMillis()+"");
+                        float x=event.getX();
+                        float y=event.getY();
+                        if((x>=coar[0]) && (x<=coar[2]) && (y>=coar[1]) && (y<=coar[3]) && button_one_check==false){
+                            butn=1;
+                            if(!can_off_vibrator){
+
+                                can_off_vibrator=true;
+                                vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                                time_start = System.currentTimeMillis();  // catch the system time when the vibration is started
+                                vibrator.vibrate(pattern, -1);
+                            }
+                        }
+                        else if((x>=coar[4]) && (x<=coar[6]) && (y>=coar[5]) && (y<=coar[7]) && button_two_check==false)
+                        {
+                            butn=2;
+                            if(!can_off_vibrator){
+
+                                can_off_vibrator=true;
+                                vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                                time_start = System.currentTimeMillis();  // catch the system time when the vibration is started
+                                vibrator.vibrate(pattern, -1);
+                            }
+                        }
+                        else if((x>=coar[8]) && (x<=coar[10]) && (y>=coar[9]) && (y<=coar[11]) && button_three_check==false)
+                        {
+                            butn=3;
+                            if(!can_off_vibrator){
+
+                                can_off_vibrator=true;
+                                vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                                time_start = System.currentTimeMillis();  // catch the system time when the vibration is started
+                                vibrator.vibrate(pattern, -1);
+                            }
+                        }
+                        else if((x>=coar[12]) && (x<=coar[14]) && (y>=coar[13]) && (y<=coar[15]) && button_four_check==false)
+                        {
+                            butn=4;
+                            if(!can_off_vibrator){
+
+                                can_off_vibrator=true;
+                                vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                                time_start = System.currentTimeMillis();  // catch the system time when the vibration is started
+                                vibrator.vibrate(pattern, -1);
+                            }
+                        }
+                        break;
+                    }
                     case MotionEvent.ACTION_MOVE : {
                         //textView.setText("get "+event.getX()+" "+back.getWidth());
+                        Log.d("In action move ", System.currentTimeMillis()+"");
                         float diffrenceX=0;
                         float diffrenceY=0;
                         float x=event.getX();
@@ -107,8 +160,7 @@ public class VAPCODE {
                         diffrenceY=Math.abs(startY-prev_startY);
                         double A=((diffrenceX*diffrenceX)+(diffrenceY*diffrenceY));
                         distance=(float)(Math.sqrt(A));
-                        prev_startX=startX;
-                        prev_startY=startY;
+
                         if((x>=coar[0]) && (x<=coar[2]) && (y>=coar[1]) && (y<=coar[3]) && button_one_check==false)
                         {
                             //drawView.SetColor();
@@ -117,7 +169,7 @@ public class VAPCODE {
 
                             butn=1;
 
-                            if(((diffrenceX==startX) && (diffrenceY==startY)) && can_off_vibrator==false)
+                            if(((prev_startX==startX) && (prev_startY==startY)) && can_off_vibrator==false)
                             {
 
                                 //1.setText("he "+" "+startX+"d "+startY);
@@ -171,7 +223,7 @@ public class VAPCODE {
                             //drawView.changecolor2();
 
                             butn=2;
-                            if(((diffrenceX==startX) && (diffrenceY==startY)) && can_off_vibrator==false)
+                            if(((prev_startX==startX) && (prev_startY==startY)) && can_off_vibrator==false)
                             {
 
                                 //textView1.setText("he "+" "+startX+"d "+startY);
@@ -368,7 +420,8 @@ public class VAPCODE {
                             }
                         }
                         //drawView.SetColor();
-
+                        prev_startX=startX;
+                        prev_startY=startY;
                         break;
                     }
                     case MotionEvent.ACTION_UP : {

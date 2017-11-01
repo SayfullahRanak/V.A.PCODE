@@ -92,7 +92,7 @@ public class CheckInstalledAppAndLaunchPassword extends Service {
 
             }
         };
-    timer.schedule(timerTask, 0, 500);
+    timer.schedule(timerTask, 0, 100);
 
     return true;
     }
